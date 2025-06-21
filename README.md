@@ -56,3 +56,39 @@ PRs are welcome :)
 - It is recommended to restart the bot after every few hours becuase WhatsApp likes to disconnect a lot. So a sample Systemd service file has been provided (`watgbridge.service.sample`). Edit the `User` and `ExecStart` according to your setup:
     - If you do not have local bot API server, remove `tgbotapi.service` from the `After` key in `Unit` section.
     - This service file will restart the bot every 24 hours
+
+
+# Installation STEP BY STEP !!!
+
+## install untuk step pertama
+- `sudo apt update && sudo apt install -y git gcc make golang-go ffmpeg imagemagick`
+> Cek: go version → go1.24.4 linux/amd64
+
+## jalankan sebagai user non-root (opsional tapi dianjurkan)
+- `sudo adduser --disabled-password --gecos "" watgbridge`
+- `sudo -iu watgbridge`
+
+## ambil & kompilasi
+- `git clone https://github.com/akshettrj/watgbridge.git;cd watgbridge`
+- `go mod tidy`          # opsional, merapikan module cache
+- `go build -o watgbridge`
+> Peringatan seperti -Wunused-value dan .note.GNU-stack boleh diabaikan; kode tetap valid.
+
+## salin & tempel konfigurasi
+- `cp sample_config.yaml config.yaml`
+- `nano config.yaml`     # isi token bot Telegram, ID group, dll.
+
+## run pertama kali atau jika sudah punya database untuk login WhatsApp (QR-code)
+- `./watgbridge`
+> Terminal akan menampilkan QR-code (ASCII).
+> Buka WhatsApp → Linked devices → tambahkan, lalu scan.
+> Setelah tersambung, Anda akan melihat log:
+`successfully logged into WhatsApp
+successfully logged into telegram`
+> Stop dengan Ctrl-C. Bot sudah menyimpan sesi WA di folder state/.
+
+## kalau sudah OK, jalankan sebagai service atau bisa gunakan mode screen TMUX/SCREEN:
+- `sudo cp watgbridge.service.sample /etc/systemd/system/watgbridge.service`
+- `sudo nano /etc/systemd/system/watgbridge.service`  # sesuaikan User, WorkingDirectory, dll.
+- `sudo systemctl daemon-reload`
+- `sudo systemctl enable --now watgbridge`
