@@ -60,25 +60,25 @@ PRs are welcome :)
 
 # Installation STEP BY STEP !!!
 
-## install untuk step pertama
+## install untuk step pertama:
 - `sudo apt update && sudo apt install -y git gcc make golang-go ffmpeg imagemagick`
 > Cek: go version → go1.24.4 linux/amd64
 
-## jalankan sebagai user non-root (opsional tapi dianjurkan)
+## (OPSIONAL tapi dianjurkan) jalankan sebagai user non-root:
 - `sudo adduser --disabled-password --gecos "" watgbridge`
 - `sudo -iu watgbridge`
 
-## ambil & kompilasi
+## ambil & kompilasi:
 - `git clone https://github.com/akshettrj/watgbridge.git;cd watgbridge`
 - `go mod tidy`          # opsional, merapikan module cache
 - `go build -o watgbridge`
 > Peringatan seperti -Wunused-value dan .note.GNU-stack boleh diabaikan; kode tetap valid.
 
-## salin & tempel konfigurasi
+## salin & tempel konfigurasi:
 - `cp sample_config.yaml config.yaml`
 - `nano config.yaml`     # isi token bot Telegram, ID group, dll.
 
-## run pertama kali atau jika sudah punya database untuk login WhatsApp (QR-code)
+## run pertama kali atau jika sudah punya database untuk login WhatsApp (QR-code):
 - `./watgbridge`
 > Terminal akan menampilkan QR-code (ASCII).
 > Buka WhatsApp → Linked devices → tambahkan, lalu scan.
@@ -87,7 +87,7 @@ PRs are welcome :)
 successfully logged into telegram`
 > Stop dengan Ctrl-C. Bot sudah menyimpan sesi WA di folder state/.
 
-## kalau sudah OK, jalankan sebagai service atau bisa gunakan mode screen TMUX/SCREEN:
+## (OPSIONAL) kalau sudah OK, jalankan sebagai service atau bisa gunakan mode screen TMUX/SCREEN:
 - `sudo cp watgbridge.service.sample /etc/systemd/system/watgbridge.service`
 - `sudo nano /etc/systemd/system/watgbridge.service`  # sesuaikan User, WorkingDirectory, dll.
 - `sudo systemctl daemon-reload`
